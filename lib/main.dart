@@ -1,18 +1,29 @@
+import 'dart:convert';
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
-var channel = IOWebSocketChannel.connect(Uri.parse('ws://localhost:8080'));
+
+var channel = IOWebSocketChannel.connect(Uri.parse('ws://localhost:8080/user'));
+// var userChannel =
+//     IOWebSocketChannel.connect(Uri.parse('ws://localhost:8080/userws'));
 
 void main() {
   runApp(MyApp());
 
   channel.stream.listen((message) {
-    channel.sink.add('received!');
+
+    print(message);
+    // channel.sink.add('received home!');
     // channel.sink.close(status.goingAway);
   });
+  // userChannel.stream.listen((message) {
+  //   // userChannel.sink.add('received user!');
+  //   // channel.sink.close(status.goingAway);
+  // });
   doWhenWindowReady(() {
     final win = appWindow;
     final initialSize = Size(300, 400);
@@ -74,8 +85,22 @@ class _MyHomePageState extends StatelessWidget {
               ])),
               SizedBox(height: 120),
               FloatingActionButton(
-                onPressed: () {
-                  channel.sink.add('Hello! Pieces Server');
+
+                onPressed: () async {
+                  var url = Uri.parse('http://localhost:8080/user');
+
+                  Map<String, String> headers = {
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json',
+                  };
+
+                  var response = await http.post(url,
+                      body: json.encode({'name': 'doodle', 'color': 'blue'}),
+                      headers: headers);
+                  print('Response status: ${response.statusCode}');
+                  print(
+                      'Response body: ${response.body}'); // channel.sink.add('Hello! Pieces Server');
+                  // channel.sink.add('hello from this home');
                 },
                 tooltip: 'Send',
                 child: Icon(Icons.send),
