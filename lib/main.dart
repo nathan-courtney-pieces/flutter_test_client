@@ -5,12 +5,18 @@ import 'package:web_socket_channel/status.dart' as status;
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 var channel = IOWebSocketChannel.connect(Uri.parse('ws://localhost:8080'));
+var userChannel =
+    IOWebSocketChannel.connect(Uri.parse('ws://localhost:8080/user'));
 
 void main() {
   runApp(MyApp());
 
   channel.stream.listen((message) {
-    channel.sink.add('received!');
+    // channel.sink.add('received home!');
+    // channel.sink.close(status.goingAway);
+  });
+  userChannel.stream.listen((message) {
+    // userChannel.sink.add('received user!');
     // channel.sink.close(status.goingAway);
   });
   doWhenWindowReady(() {
@@ -75,7 +81,8 @@ class _MyHomePageState extends StatelessWidget {
               SizedBox(height: 120),
               FloatingActionButton(
                 onPressed: () {
-                  channel.sink.add('Hello! Pieces Server');
+                  // channel.sink.add('Hello! Pieces Server');
+                  userChannel.sink.add('hello from this user');
                 },
                 tooltip: 'Send',
                 child: Icon(Icons.send),
