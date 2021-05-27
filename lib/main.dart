@@ -7,7 +7,7 @@ import 'package:web_socket_channel/status.dart' as status;
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 
-var channel = IOWebSocketChannel.connect(Uri.parse('ws://localhost:8080/user'));
+var channel = IOWebSocketChannel.connect(Uri.parse('ws://localhost:3333/user'));
 // var userChannel =
 //     IOWebSocketChannel.connect(Uri.parse('ws://localhost:8080/userws'));
 
@@ -87,7 +87,7 @@ class _MyHomePageState extends StatelessWidget {
               FloatingActionButton(
 
                 onPressed: () async {
-                  var url = Uri.parse('http://localhost:8080/user');
+                  var url = Uri.parse('http://localhost:3333/user');
 
                   Map<String, String> headers = {
                     'Content-type': 'application/json',
